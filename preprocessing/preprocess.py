@@ -1,8 +1,8 @@
 import numpy as np
 from scipy.io import loadmat
-from p300detection.preprocessing.filters import reduce_noise
+from preprocessing.filters import reduce_noise
 
-dataset = loadmat('../../Project/preprocessing/Subject_A_Train.mat')
+dataset = loadmat('../Data/Subject_A_Train.mat')
 raw_signal = np.transpose(dataset['Signal'], (0, 2, 1))
 stimulus_type = dataset['StimulusType'].astype(int)
 stimulus_code = dataset['StimulusCode'].astype(int)
@@ -21,6 +21,7 @@ n_trials = 180
 
 labels = np.zeros(n_chars * n_trials)
 data = np.zeros((n_chars * n_trials, n_channels, WINDOW_LENGTH))
+data_without_baseline = np.zeros((n_chars * n_trials, n_channels, WINDOW_LENGTH))
 
 event = []
 i = 0
@@ -42,6 +43,7 @@ for char in range(n_chars):
     for j in range(stimulus.shape[0]):
         if stimulus[j] == 1:
             WINDOW_LENGTH_BASELINE = 0
+        data_without_baseline[j + i * len(stimulus), :, :] = filtered_signal[:, stimulus[j]: stimulus[j] + WINDOW_LENGTH]
         data[j + i * len(stimulus), :, :] = filtered_signal[:, stimulus[j]: stimulus[j] + WINDOW_LENGTH]
         if j > 0:
             data[j + i * len(stimulus), :, :] -= np.mean(filtered_signal[:, stimulus[j] - WINDOW_LENGTH:stimulus[j]], 1).reshape(64, 1)
