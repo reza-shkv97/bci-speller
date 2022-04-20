@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def accuracy_score(predictions, target):
+def accuracy_score(predictions, target, event):
     score_pos = predictions[:, 1]
 
     n_character = int(len(score_pos) / 180)
@@ -20,9 +20,8 @@ def accuracy_score(predictions, target):
         ind[k, 0] = np.argmax(mean_score[(k * 6):(k + 1) * 6])
     screen_char = list('ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789_')
 
-    l = len(ind)
-    col = ind[range(0, l, 2)]
-    row = ind[range(1, l, 2)]
+    col = ind[range(0, n_row_col, 2)]
+    row = ind[range(1, n_row_col, 2)]
     row_col = col + row * 6
 
     target_predict = []
@@ -35,4 +34,4 @@ def accuracy_score(predictions, target):
 
         if target[i] == target_predict[i]:
             c = c + 1
-    print('acc_test: ' + str(c / len(target_predict)))
+    return c / len(target_predict)
