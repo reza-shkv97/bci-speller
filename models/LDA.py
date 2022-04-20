@@ -1,7 +1,9 @@
 import numpy as np
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 import mat73
-from utils.metrics import accuracy_score
+from utils.metrics import performance_measure
+from sklearn.metrics import classification_report
+
 
 X_train_PCA = np.loadtxt('../Data/X_train_A_pca.npy.gz')
 Y_train = np.loadtxt('../Data/y_train_A.npy.gz')
@@ -17,6 +19,6 @@ LDA_model.fit(X_train_PCA, Y_train)
 prediction = LDA_model.predict_proba(X_test_PCA)
 
 
-test_accuracy = accuracy_score(prediction, test_str_A, event)
+accuracy, precision, recall, f1, support = performance_measure(prediction, test_str_A, event)
 
-print('acc_test: {}'.format(test_accuracy))
+print('acc_test: {}, precision: {}, recall: {}, f1:{}'.format(accuracy, precision, recall, f1))

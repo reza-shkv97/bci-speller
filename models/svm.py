@@ -1,7 +1,7 @@
 import mat73
 import numpy as np
 from sklearn.svm import SVC
-from utils.metrics import accuracy_score
+from utils.metrics import performance_measure
 
 X_train_PCA = np.loadtxt('../Data/X_train_A_pca.npy.gz')
 Y_train = np.loadtxt('../Data/y_train_A.npy.gz')
@@ -17,6 +17,6 @@ clf = SVC(kernel='rbf', probability=True, C=0.5, class_weight={1: 5})
 clf.fit(X_train_PCA, Y_train)
 
 prediction = clf.predict_proba(X_test_PCA)
-test_accuracy = accuracy_score(prediction, test_str_A, event)
+accuracy, precision, recall, f1, support = performance_measure(prediction, test_str_A, event)
+print('acc_test: {}, precision: {}, recall: {}, f1:{}'.format(accuracy, precision, recall, f1))
 
-print('acc_test: {}'.format(test_accuracy))

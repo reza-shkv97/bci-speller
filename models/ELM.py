@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.linalg import pinv
 import mat73
-from utils.metrics import accuracy_score
+from utils.metrics import performance_measure
 
 
 X_train_PCA = np.loadtxt('../Data/X_train_A_pca.npy.gz')
@@ -33,6 +33,6 @@ H_ts = sigmoid(G_ts)
 
 prediction = np.dot(H_ts, W_output)
 
-test_accuracy = accuracy_score(prediction, test_str_A, event)
+test_accuracy = performance_measure(prediction, test_str_A, event)
 
 print('acc_test: {}'.format(test_accuracy))
