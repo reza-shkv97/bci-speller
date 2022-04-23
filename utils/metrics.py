@@ -1,7 +1,8 @@
 import numpy as np
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 
 
-def accuracy_score(predictions, target, event):
+def performance_measure(predictions, target, event):
     score_pos = predictions[:, 1]
 
     n_character = int(len(score_pos) / 180)
@@ -29,9 +30,6 @@ def accuracy_score(predictions, target, event):
     for i in range(len(row_col)):
         target_predict.append(screen_char[int(row_col[i])])
 
-    c = 0
-    for i in range(len(target_predict)):
-
-        if target[i] == target_predict[i]:
-            c = c + 1
-    return c / len(target_predict)
+    accuracy = accuracy_score(list(target), target_predict)
+    precision, recall, f_1, support = precision_recall_fscore_support(list(target), target_predict, average='macro')
+    return accuracy, precision, recall, f_1, support
